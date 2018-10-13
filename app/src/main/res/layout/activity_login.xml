@@ -21,24 +21,28 @@
             cerje chjden cjrnme vbcn dvbncm erniejknkrejnfkjnrekjndenjkdnre
             ncjkfmdnvjckfmnjkcmnfed bd chjen chjen dhbcn xbdn cbf b bdbchjefbde nfj3kewfnjwkremnd3 fwdewjk fnuriejknf
             cnreuikjfnekjfnre" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="24dp"
-            android:paddingBottom="16dp">
+            android:paddingBottom="16dp"
+            android:paddingTop="24dp">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_person_black_24dp" />
-        <EditText
-            android:layout_marginLeft="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/name"
-            android:inputType="textCapWords"
-             />
+                android:src="@drawable/ic_person_black_24dp"
+                android:contentDescription="TODO" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:hint="@string/name"
+                android:inputType="textCapWords" />
 
 
         </LinearLayout>
@@ -50,24 +54,24 @@
 
             <ImageView
                 android:id="@+id/school_icon"
-                android:layout_width="wrap_content" 
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_school_black_24dp" />
 
             <EditText
-                android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:inputType="textCapCharacters"
-                android:hint="@string/course" />
+                android:layout_weight="2"
+                android:hint="@string/course"
+                android:inputType="textCapCharacters" />
 
             <EditText
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_weight="1"
                 android:hint="@string/number"
                 android:inputType="number" />
         </LinearLayout>
