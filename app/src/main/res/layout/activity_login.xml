@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_person_black_24dp"
-                android:contentDescription="TODO" />
+                android:contentDescription="@string/person_icon" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -57,12 +57,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_school_black_24dp" />
+                android:src="@drawable/ic_school_black_24dp"
+                android:contentDescription="@string/student_icon" />
 
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_weight="2"
                 android:hint="@string/course"
                 android:inputType="textCapCharacters" />
@@ -71,6 +73,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:hint="@string/number"
                 android:inputType="number" />
@@ -87,12 +90,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_email_black_24dp" />
+                android:src="@drawable/ic_email_black_24dp"
+                android:contentDescription="@string/mail_icon" />
 
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress" />
@@ -106,9 +111,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/colorAccent"
+        android:background="@color/colorAccent"
         android:padding="16dp"
-        android:text="Start"
+        android:text="@string/start"
         android:textColor="@color/colorPrimary" />
 
 </RelativeLayout>
