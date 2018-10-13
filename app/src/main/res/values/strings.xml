@@ -5,4 +5,7 @@
     <string name="course">Course (ex: MEEC)</string>
     <string name="email">Email</string>
     <string name="start">Start</string>
+    <string name="person_icon">Person icon</string>
+    <string name="student_icon">Student icon</string>
+    <string name="mail_icon">Mail icon</string>
 </resources>
