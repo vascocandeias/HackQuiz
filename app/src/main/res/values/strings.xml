@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HackQuiz</string>
+    <string name="name">Name</string>
+    <string name="number">Id</string>
+    <string name="course">Course (ex: MEEC)</string>
+    <string name="email">Email</string>
+    <string name="start">Start</string>
+</resources>
