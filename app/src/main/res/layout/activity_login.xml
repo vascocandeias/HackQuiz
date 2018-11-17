@@ -41,6 +41,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:hint="@string/name"
+                android:id="@+id/login_name"
                 android:inputType="textCapWords" />
 
 
@@ -66,6 +67,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_weight="2"
                 android:hint="@string/course"
+                android:id="@+id/login_course"
                 android:inputType="textCapCharacters" />
 
             <EditText
@@ -75,6 +77,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:hint="@string/number"
+                android:id="@+id/login_id"
                 android:inputType="number" />
         </LinearLayout>
 
@@ -99,6 +102,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:hint="@string/email"
+                android:id="@+id/login_mail"
                 android:inputType="textEmailAddress" />
 
         </LinearLayout>
@@ -113,6 +117,7 @@
         android:background="@color/colorAccent"
         android:padding="16dp"
         android:text="@string/start"
+        android:id="@+id/login_button"
         android:textColor="@android:color/white" />
 
 </RelativeLayout>
