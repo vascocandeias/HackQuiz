@@ -11,8 +11,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEditTextId;
     private EditText mEditTextMail;
     private RequestQueue mQueue;
+    private String url = "http://localhost:8081";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +51,32 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void submitLogin(){
-        String url = "http://localhost:8081";
 
         String postUrl = url + "/PlayerInformation";
 
-        final StringRequest request = new StringRequest(Request.Method.POST, postUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
-                //aqui vai-se passar à outra atividade ou pedir as perguntas... maybe perguntas
-            }
+        final JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, postUrl, null,
+                new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+
+                    try {
+                        for (int i = 0; i < response.length(); i++){
+
+                            JSONObject questionDetails = response.getJSONObject(i);
+
+                            String question = questionDetails.getString("question");
+                            String answer1 = questionDetails.getString("answer1");
+                            String answer2 = questionDetails.getString("answer2");
+                            String answer3 = questionDetails.getString("answer3");
+                            String answer4 = questionDetails.getString("answer4");
+                            int correctAnswer = questionDetails.getInt("correct_answer");
+
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
