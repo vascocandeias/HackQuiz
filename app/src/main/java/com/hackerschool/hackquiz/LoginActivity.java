@@ -71,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
                             String answer4 = questionDetails.getString("answer4");
                             int correctAnswer = questionDetails.getInt("correct_answer");
 
-
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
