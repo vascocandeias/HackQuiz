@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEditTextId;
     private EditText mEditTextMail;
     private RequestQueue mQueue;
-    private String url = "http://localhost:8081";
+    final private String URL = "http://hackerschool.io:8080";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void submitLogin(){
 
-        String postUrl = url + "/PlayerInformation";
+        String postUrl = URL + "/PlayerInformation";
 
         final JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, postUrl, null,
                 new Response.Listener<JSONArray>() {
