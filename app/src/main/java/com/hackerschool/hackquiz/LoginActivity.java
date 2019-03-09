@@ -1,5 +1,6 @@
 package com.hackerschool.hackquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,8 +30,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEditTextCourse;
     private EditText mEditTextId;
     private EditText mEditTextMail;
-    private RequestQueue mQueue;
-    final private String URL = "http://hackerschool.io:8080";
+    private RequestQueue mQueue = Volley.newRequestQueue(this);
+    private int mPlayerCode = 1;
+    private boolean canPlay = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         mEditTextId = findViewById(R.id.login_id);
         mEditTextMail = findViewById(R.id.login_mail);
         Button buttonLogin = findViewById(R.id.login_button);
-        mQueue = Volley.newRequestQueue(this);
         buttonLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -50,6 +52,94 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void submitLogin(){
+
+        String paramUrl = R.string.URL + "/index";
+
+        final StringRequest requestIndex = new StringRequest (Request.Method.POST, paramUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            Scanner scanner = new Scanner(response);
+                            mPlayerCode = scanner.nextInt();
+                          //  Toast.makeText(getApplicationContext(),String.valueOf(mPlayerCode),Toast.LENGTH_SHORT).show();
+                        }catch (Exception e){
+                            // TODO: erroor
+                        }
+                        changeActivity();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String,String> loginInfo = new HashMap<>();
+                loginInfo.put("name", mEditTextName.getText().toString());
+                loginInfo.put("course", mEditTextCourse.getText().toString());
+                loginInfo.put("id", mEditTextId.getText().toString());
+                loginInfo.put("mail", mEditTextMail.getText().toString());
+                return loginInfo;
+            }
+        };
+
+        mQueue.add(requestIndex);
+    }
+
+    private void changeActivity(){
+
+        // TODO: dizer quem é. You're player number X get ready
+
+        switch (mPlayerCode){
+            case 0 : // TODO: can't play. reload app
+                break;
+            case 1 :
+                tryAgain();
+                break;
+            case 2 :
+                Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    private void tryAgain(){
+
+        String loadingUrl = R.string.URL + "/wait";
+
+        final StringRequest requestWait = new StringRequest(Request.Method.GET, loadingUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Scanner scanner = new Scanner(response);
+                        canPlay = scanner.nextBoolean();
+
+                        if(canPlay){
+                            Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);
+                            startActivity(intent);
+                        } else {
+                            tryAgain();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(requestWait);
+    }
+
+
+
+
+
+/* //version where we get the questions
     private void submitLogin(){
 
         String postUrl = URL + "/PlayerInformation";
@@ -95,4 +185,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mQueue.add(request);
     }
+    */
+
+
 }
