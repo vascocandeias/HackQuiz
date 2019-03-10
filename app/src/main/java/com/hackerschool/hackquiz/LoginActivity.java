@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         mEditTextName = findViewById(R.id.login_name);
         mEditTextCourse = findViewById(R.id.login_course);
         mEditTextId = findViewById(R.id.login_id);
@@ -73,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
                         try{
                             Scanner scanner = new Scanner(response);
                             mPlayerCode = scanner.nextInt();
-                            Toast.makeText(getApplicationContext(),String.valueOf(mPlayerCode),Toast.LENGTH_SHORT).show();
                         }catch (Exception e){
                             // TODO: erroor
                         }
@@ -141,8 +144,6 @@ public class LoginActivity extends AppCompatActivity {
 
         String loadingUrl = getString(R.string.URL) + "/wait";
 
-        Toast.makeText(getApplicationContext(),"Trying",Toast.LENGTH_SHORT).show();
-
         final StringRequest requestWait = new StringRequest(Request.Method.GET, loadingUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -150,8 +151,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         Scanner scanner = new Scanner(response);
                         canPlay = scanner.nextInt();
-
-                        Toast.makeText(getApplicationContext(),String.valueOf(canPlay),Toast.LENGTH_SHORT).show();
 
                         if(canPlay == 1){
                             Intent intent = new Intent(getApplicationContext(), QuestionActivity.class);

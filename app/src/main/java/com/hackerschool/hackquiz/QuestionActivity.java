@@ -1,10 +1,13 @@
 package com.hackerschool.hackquiz;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ public class QuestionActivity extends AppCompatActivity {
     int[] correctAnswer;
     private TextView questionView;
     private TextView[] answerViews = new TextView[4];
+    private CardView[] cardViews = new CardView[4];
     private int curQuestion = 0;
     private int total = 0, sec = 0, min = 0, totalSec = 0, id;
     private TextView timeView;
@@ -38,6 +42,10 @@ public class QuestionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         String questionsUrl = getString(R.string.URL) + "/questions";
         mQueue = Volley.newRequestQueue(this);
         questionView = findViewById(R.id.question);
@@ -45,10 +53,15 @@ public class QuestionActivity extends AppCompatActivity {
         answerViews[1] = findViewById(R.id.answer2);
         answerViews[2] = findViewById(R.id.answer3);
         answerViews[3] = findViewById(R.id.answer4);
-        timeView = findViewById(R.id.time);
+        cardViews[0] = findViewById(R.id.card1);
+        cardViews[1] = findViewById(R.id.card2);
+        cardViews[2] = findViewById(R.id.card3);
+        cardViews[3] = findViewById(R.id.card4);
+        timeView = findViewById(R.id.toolbarTextView);
+        timeView.setVisibility(View.VISIBLE);
 
         Bundle b = getIntent().getExtras();
-        id = b.getInt("totalSec");
+        id = b.getInt("id");
 
         start = new CountDownTimer(300000000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -108,10 +121,12 @@ public class QuestionActivity extends AppCompatActivity {
 
     public void setQuestions(){
         questionView.setText(question[curQuestion]);
+        questionView.setTypeface(null, Typeface.BOLD);
         for(int j = 0; j < answerViews.length; j++){
         //    Toast.makeText(getApplicationContext(),String.valueOf(j),Toast.LENGTH_SHORT).show();
-            answerViews[j].setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            cardViews[j].setBackgroundColor(getResources().getColor(R.color.white));
             answerViews[j].setText(answers[curQuestion][j]);
+            answerViews[j].setTextColor(questionView.getTextColors());
         }
     }
 
@@ -119,15 +134,15 @@ public class QuestionActivity extends AppCompatActivity {
         int m = Integer.parseInt(v.getTag().toString());
 
         if(m == correctAnswer[curQuestion]){
-            answerViews[m].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            cardViews[m].setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            answerViews[m].setTextColor(getResources().getColor(R.color.white));
             total++;
         } else {
-            answerViews[m].setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            answerViews[correctAnswer[curQuestion]].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            cardViews[m].setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            cardViews[correctAnswer[curQuestion]].setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            answerViews[m].setTextColor(getResources().getColor(R.color.white));
+            answerViews[correctAnswer[curQuestion]].setTextColor(getResources().getColor(R.color.white));
         }
-
-        Toast.makeText(getApplicationContext(),String.valueOf(total),Toast.LENGTH_SHORT).show();
-
 
         Handler h = new Handler();
 
@@ -138,7 +153,6 @@ public class QuestionActivity extends AppCompatActivity {
                 if(curQuestion++ < answerViews.length) setQuestions();
                 else{
                     start.cancel();
-                    Toast.makeText(getApplicationContext(),String.valueOf(min) + ":" + String.valueOf(sec),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), SubmitActivity.class);
                     intent.putExtra("correct", total);
                     intent.putExtra("sec", sec);

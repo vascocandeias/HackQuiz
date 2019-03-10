@@ -1,7 +1,13 @@
 package com.hackerschool.hackquiz;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +34,9 @@ public class SubmitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Bundle b = getIntent().getExtras();
         total = b.getInt("correct");
         sec = b.getInt("sec");
@@ -37,6 +46,8 @@ public class SubmitActivity extends AppCompatActivity {
 
         mTextViewResults = findViewById(R.id.results);
         mTextViewResults.setText("You answered " + String.valueOf(total) + " questions correctly in " + String.valueOf(min) + ":" + String.valueOf(sec));
+
+        //mTextViewResults.setText("time: " + String.valueOf(totalSec) + " correct: " + String.valueOf(total) + " code: " + String.valueOf(id) + " id: 4444");
 
         mQueue = Volley.newRequestQueue(this);
         String submitUrl = getString(R.string.URL) + "/results";
@@ -70,7 +81,15 @@ public class SubmitActivity extends AppCompatActivity {
         mQueue.add(submit);
     }
 
-    private void goHome(){
+    public void goHome(View v){
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
 
+
+        /*int mPendingIntentId = 123456;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(getApplicationContext(), mPendingIntentId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+        System.exit(0);*/
     }
 }
