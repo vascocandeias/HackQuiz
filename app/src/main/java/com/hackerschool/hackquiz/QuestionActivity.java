@@ -1,7 +1,11 @@
 package com.hackerschool.hackquiz;
 
+import android.content.Intent;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +23,6 @@ import org.json.JSONObject;
 
 public class QuestionActivity extends AppCompatActivity {
 
-    String questionsUrl = R.string.URL + "/questions";
     private RequestQueue mQueue;
     private String[] question;
     private String[][] answers;
@@ -27,18 +30,43 @@ public class QuestionActivity extends AppCompatActivity {
     private TextView questionView;
     private TextView[] answerViews = new TextView[4];
     private int curQuestion = 0;
-    private int total = 0;
+    private int total = 0, sec = 0, min = 0, totalSec = 0, id;
+    private TextView timeView;
+    private CountDownTimer start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
+        String questionsUrl = getString(R.string.URL) + "/questions";
         mQueue = Volley.newRequestQueue(this);
         questionView = findViewById(R.id.question);
         answerViews[0] = findViewById(R.id.answer1);
         answerViews[1] = findViewById(R.id.answer2);
         answerViews[2] = findViewById(R.id.answer3);
         answerViews[3] = findViewById(R.id.answer4);
+        timeView = findViewById(R.id.time);
+
+        Bundle b = getIntent().getExtras();
+        id = b.getInt("totalSec");
+
+        start = new CountDownTimer(300000000, 1000) {
+            public void onTick(long millisUntilFinished) {
+
+                sec++;
+                totalSec++;
+                if (sec == 59) {
+                    min++;
+                    sec = 0;
+                }
+
+                timeView.setText(String.valueOf(min) + ":" + String.valueOf(sec));
+            }
+
+            public void onFinish() {
+                Log.e("TIMER:", "Finished");
+            }
+        };
 
         final JsonArrayRequest requestQuestions = new JsonArrayRequest(Request.Method.GET, questionsUrl, null,
                 new Response.Listener<JSONArray>() {
@@ -58,12 +86,14 @@ public class QuestionActivity extends AppCompatActivity {
                                 answers[i][1] = questionDetails.getString("answer2");
                                 answers[i][2] = questionDetails.getString("answer3");
                                 answers[i][3] = questionDetails.getString("answer4");
-                                correctAnswer[i] = questionDetails.getInt("correct_answer");
+                                correctAnswer[i] = questionDetails.getInt("correct_answer") - 1;
+                                //correctAnswer[i] = 0;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         setQuestions();
+                        start.start();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -73,10 +103,6 @@ public class QuestionActivity extends AppCompatActivity {
         });
 
         mQueue.add(requestQuestions);
-
-
-        // TODO: display as perguntas, obter a resposta e mudar a pergunta. ciclo for!
-        // TODO: começar timer!
 
     }
 
@@ -102,7 +128,27 @@ public class QuestionActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(),String.valueOf(total),Toast.LENGTH_SHORT).show();
 
-        if(curQuestion++ < answerViews.length) setQuestions();
+
+        Handler h = new Handler();
+
+        h.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                if(curQuestion++ < answerViews.length) setQuestions();
+                else{
+                    start.cancel();
+                    Toast.makeText(getApplicationContext(),String.valueOf(min) + ":" + String.valueOf(sec),Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), SubmitActivity.class);
+                    intent.putExtra("correct", total);
+                    intent.putExtra("sec", sec);
+                    intent.putExtra("min", min);
+                    intent.putExtra("totalSec", totalSec);
+                    intent.putExtra("id", id);
+                    startActivity(intent);
+                }
+            }
+        }, 1000);
     }
 
 }

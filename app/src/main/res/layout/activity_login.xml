@@ -11,15 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="24dp">
+        android:paddingTop="24dp"
+        android:id="@+id/everything">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="nuiefrrjknvcjkefmncuijkerncjkerenvjck eervncuijdk hjrhevcxnreij
-            cerje chjden cjrnme vbcn dvbncm erniejknkrejnfkjnrekjndenjkdnre
-            ncjkfmdnvjckfmnjkcmnfed bd chjen chjen dhbcn xbdn cbf b bdbchjefbde nfj3kewfnjwkremnd3 fwdewjk fnuriejknf
-            cnreuikjfnekjfnre" />
+            android:text="@string/welcome_text" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/person_icon"
+                android:id="@+id/person_icon"
                 android:src="@drawable/ic_person_black_24dp" />
 
             <EditText
@@ -108,6 +107,40 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        android:id="@+id/you_are"
+         />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loading"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true"
+            android:id="@+id/progress"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Waiting for player number 2..."
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/progress"/>
+
+    </RelativeLayout>
 
     <Button
         android:layout_width="wrap_content"
